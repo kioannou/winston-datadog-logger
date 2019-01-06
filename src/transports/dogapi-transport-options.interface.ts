@@ -1,6 +1,6 @@
 import { TransportStreamOptions } from 'winston-transport';
 
-export interface DogapiTransportOptions extends TransportStreamOptions{
+export interface IDogapiTransportOptions extends TransportStreamOptions{
   level: string;
   handleExceptions: boolean;
   apiKey: string | undefined;

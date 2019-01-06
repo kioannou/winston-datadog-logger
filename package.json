@@ -2,7 +2,8 @@
   "name": "winston-datadog-logger",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --verbose --coverage",
     "build": "tsc",
@@ -26,6 +27,9 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "@types/node": "^10.12.17"
+    "@types/node": "^10.12.17",
+    "dogapi": "^2.8.3",
+    "winston": "^3.1.0",
+    "winston-transport": "^4.2.0"
   }
 }

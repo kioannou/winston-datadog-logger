@@ -1,20 +1,20 @@
 // tslint:disable-next-line
 import TransportStream from 'winston-transport';
-import { DogapiEventType } from '../../../types/dogapi-event-type.model';
-import { DogapiTransportOptions } from './dogapi-transport-options.interface';
-import { EVENT_LEVEL_MAP } from '../datadog-event-level-mapping';
-import config from '../../../../config/config';
+import { IDogapiTransportOptions } from './dogapi-transport-options.interface';
+import { EVENT_LEVEL_MAP } from '../models/datadog-event-level-mapping';
+import { DogapiEventType } from '../models/dogapi-event-type.enum';
 
+// tslint:disable-next-line
 const dogapi = require('dogapi');
 
-export type DogapiLogInfo = {
+export interface IDogapiLogInfo {
   message: string,
   level: DogapiEventType,
   timestamp: string,
   title: string,
   internalRequestId: string,
   requestId: string,
-};
+}
 
 export class DogapiTransport extends TransportStream {
   eventLevelMapKeys: string[];
@@ -24,7 +24,7 @@ export class DogapiTransport extends TransportStream {
     logDatadogEvents: false,
   };
 
-  constructor(opts: DogapiTransportOptions) {
+  constructor(opts: IDogapiTransportOptions) {
     super(opts);
 
     this.eventLevelMapKeys = Object.keys(EVENT_LEVEL_MAP);
@@ -53,7 +53,7 @@ export class DogapiTransport extends TransportStream {
     return DogapiEventType.Info; // The default level is 'info'
   }
 
-  public log(info: DogapiLogInfo, callback: any): void {
+  public log(info: IDogapiLogInfo, callback: any): void {
     const { level, message, timestamp, title, internalRequestId = null, requestId = null } = info;
 
     setImmediate(() => {
