@@ -7,24 +7,24 @@ import { LoggerOptions } from "../logger-options/logger-options";
 import { IDogapiTransportOptions } from "../transports/dogapi-transport-options.interface";
 import { DEFAULT_DOGAPI_TRANSPORT_OPTIONS } from "../transports/default-dogapi-transport-options.const";
 
-export class LoggerFactory {
+export class WinstonDatadogLoggerFactory {
   private readonly options: LoggerOptions;
 
   constructor(options?: ILoggerOptions) {
-    this.options = LoggerFactory.initializeOptions(options);
+    this.options = WinstonDatadogLoggerFactory.initializeOptions(options);
   }
 
   public create(): winston.Logger {
     // Creating the configuration format
-    const formatConfiguration = LoggerFactory.createFormatConfiguration();
+    const formatConfiguration = WinstonDatadogLoggerFactory.createFormatConfiguration();
 
     // Creating the main logger
-    const logger = LoggerFactory.createLogger(formatConfiguration, this.options);
+    const logger = WinstonDatadogLoggerFactory.createLogger(formatConfiguration, this.options);
 
     // Resolving Console Transport
     if (this.options && this.options.logToConsole) {
       const consoleTransportOptions = this.createConsoleTransportOptions();
-      const consoleTransport = LoggerFactory.createConsoleTransport(consoleTransportOptions);
+      const consoleTransport = WinstonDatadogLoggerFactory.createConsoleTransport(consoleTransportOptions);
       logger.transports.push(consoleTransport);
     }
 
@@ -65,7 +65,7 @@ export class LoggerFactory {
     return winston.createLogger({
       format: formatConfiguration, // Uses the custom format defined above
       transports: [],
-      exitOnError: LoggerFactory.resolveExitOnError(options)
+      exitOnError: WinstonDatadogLoggerFactory.resolveExitOnError(options)
     });
   }
 
