@@ -1,1 +1,1 @@
-export { Logger } from './logger';
+export { LoggerFactory } from "./logger/logger-factory";

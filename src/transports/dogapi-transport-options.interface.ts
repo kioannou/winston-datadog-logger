@@ -1,9 +1,11 @@
-import { TransportStreamOptions } from 'winston-transport';
+import { TransportStreamOptions } from "winston-transport";
+import { NullableString } from "../types/nullable-string.type";
+import { EventLevel } from "../models/event-level.enum";
 
-export interface IDogapiTransportOptions extends TransportStreamOptions{
-  level: string;
+export interface IDogapiTransportOptions extends TransportStreamOptions {
+  level: EventLevel;
   handleExceptions: boolean;
-  apiKey: string | undefined;
-  appKey: string | undefined;
+  apiKey: NullableString;
+  appKey: NullableString;
   logDatadogEvents: boolean;
 }

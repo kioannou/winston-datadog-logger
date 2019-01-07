@@ -1,11 +1,12 @@
 // tslint:disable-next-line
-import TransportStream from 'winston-transport';
-import { IDogapiTransportOptions } from './dogapi-transport-options.interface';
-import { EVENT_LEVEL_MAP } from '../models/datadog-event-level-mapping';
-import { DogapiEventType } from '../models/dogapi-event-type.enum';
+import TransportStream from "winston-transport";
+import { IDogapiTransportOptions } from "./dogapi-transport-options.interface";
+import { EVENT_LEVEL_MAP } from "../models/datadog-event-level-mapping";
+import { DogapiEventType } from "../models/dogapi-event-type.enum";
+import { LoggerOptions } from "../logger-options/logger-options";
 
 // tslint:disable-next-line
-const dogapi = require('dogapi');
+const dogapi = require("dogapi");
 
 export interface IDogapiLogInfo {
   message: string,
@@ -19,27 +20,33 @@ export interface IDogapiLogInfo {
 export class DogapiTransport extends TransportStream {
   eventLevelMapKeys: string[];
   options = {
-    api_key: '',
-    app_key: '',
-    logDatadogEvents: false,
+    api_key: "",
+    app_key: "",
+    logDatadogEvents: false
   };
 
-  constructor(opts: IDogapiTransportOptions) {
-    super(opts);
+  constructor(dogapiTransportOptions: IDogapiTransportOptions, loggerOptions: LoggerOptions) {
+    super(dogapiTransportOptions);
 
     this.eventLevelMapKeys = Object.keys(EVENT_LEVEL_MAP);
 
-      // performing the validations
-    if (opts && opts.hasOwnProperty('apiKey') && opts.apiKey) {
-      this.options.api_key = opts.apiKey;
+    // performing the validations
+    if (dogapiTransportOptions
+      && dogapiTransportOptions.hasOwnProperty("apiKey")
+      && dogapiTransportOptions.apiKey) {
+      this.options.api_key = dogapiTransportOptions.apiKey;
     }
 
-    if (opts && opts.hasOwnProperty('appKey') && opts.appKey) {
-      this.options.app_key = opts.appKey;
+    if (dogapiTransportOptions
+      && dogapiTransportOptions.hasOwnProperty("appKey")
+      && dogapiTransportOptions.appKey) {
+      this.options.app_key = dogapiTransportOptions.appKey;
     }
 
-    if (opts && opts.hasOwnProperty('validDatadogEvents') && opts.logDatadogEvents) {
-      this.options.logDatadogEvents = opts.logDatadogEvents;
+    if (dogapiTransportOptions
+      && dogapiTransportOptions.hasOwnProperty("validDatadogEvents")
+      && dogapiTransportOptions.logDatadogEvents) {
+      this.options.logDatadogEvents = dogapiTransportOptions.logDatadogEvents;
     }
 
     dogapi.initialize(this.options);
@@ -57,7 +64,7 @@ export class DogapiTransport extends TransportStream {
     const { level, message, timestamp, title, internalRequestId = null, requestId = null } = info;
 
     setImmediate(() => {
-      this.emit('logged', level);
+      this.emit("logged", level);
     });
 
     const eventType = this.validateEventLevel(level);
@@ -73,18 +80,18 @@ export class DogapiTransport extends TransportStream {
         `environment:${config.environment}`,
         `instance:${config.instance}`,
         `request-id:${requestId}`,
-        `internal-request-id:${internalRequestId}`,
-      ],
+        `internal-request-id:${internalRequestId}`
+      ]
     };
 
     // Instead of null we can put a callback for some additional action
     dogapi.event.create(title, message, properties, (err: any, res: any) => {
       if (this.options.logDatadogEvents) {
-        console.log('Datadog event response: ', res);
+        console.log("Datadog event response: ", res);
       }
 
       if (this.options.logDatadogEvents && err) {
-        console.log('Datadog event error: ', err);
+        console.log("Datadog event error: ", err);
       }
 
       return callback(null, true);
