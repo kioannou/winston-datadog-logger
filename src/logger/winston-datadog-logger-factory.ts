@@ -1,10 +1,9 @@
-import * as winston from "winston";
-import { LoggerOptions } from "../logger-options/logger-options";
-import { ConsoleTransportOptions } from "../transports/console-transport-options";
-import { DogapiTransport } from "../transports/dogapi-transport";
+import * as winston from 'winston';
+import { LoggerOptions } from '../logger-options/logger-options';
+import { ConsoleTransportOptions } from '../transports/console-transport-options';
+import { DogapiTransport } from '../transports/dogapi-transport';
 
 export class WinstonDatadogLoggerFactory {
-
   private static initializeOptions(options?: LoggerOptions): LoggerOptions {
     return new LoggerOptions(options);
   }
@@ -18,12 +17,11 @@ export class WinstonDatadogLoggerFactory {
       winston.format.colorize(),
       winston.format.timestamp(),
       winston.format.align(),
-      winston.format.printf(info =>
-        `${info.timestamp} ${info.level}: ${info.message}`));
+      winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
+    );
   }
 
   private static createLogger(formatConfiguration: any, options?: LoggerOptions): winston.Logger {
-
     return winston.createLogger({
       exitOnError: WinstonDatadogLoggerFactory.resolveExitOnError(options),
       format: formatConfiguration, // Uses the custom format defined above
@@ -32,7 +30,7 @@ export class WinstonDatadogLoggerFactory {
   }
 
   private static resolveExitOnError(options?: LoggerOptions): boolean {
-    return (options && options.exitOnError) ? options.exitOnError : false;
+    return options && options.exitOnError ? options.exitOnError : false;
   }
   private readonly options: LoggerOptions;
 

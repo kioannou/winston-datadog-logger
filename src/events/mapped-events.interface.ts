@@ -1,4 +1,4 @@
-import { DogapiEvent } from "./dogapi-event.enum";
+import { DogapiEvent } from './dogapi-event.enum';
 
 export interface IMappedEvents {
   debug: DogapiEvent;

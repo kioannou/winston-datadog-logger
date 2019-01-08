@@ -1,19 +1,19 @@
 // tslint:disable-next-line
-import TransportStream from "winston-transport";
-import { DogapiEvent } from "../events/dogapi-event.enum";
-import { WinstonEvent } from "../events/winston-event.enum";
-import { LoggerOptions } from "../logger-options/logger-options";
+import TransportStream from 'winston-transport';
+import { DogapiEvent } from '../events/dogapi-event.enum';
+import { WinstonEvent } from '../events/winston-event.enum';
+import { LoggerOptions } from '../logger-options/logger-options';
 
 // tslint:disable-next-line
-const dogapi = require("dogapi");
+const dogapi = require('dogapi');
 
 export interface IDogapiLogInfo {
-  message: string,
-  level: DogapiEvent,
-  timestamp: string,
-  title: string,
-  internalRequestId: string,
-  requestId: string,
+  message: string;
+  level: DogapiEvent;
+  timestamp: string;
+  title: string;
+  internalRequestId: string;
+  requestId: string;
 }
 
 export class DogapiTransport extends TransportStream {
@@ -30,7 +30,7 @@ export class DogapiTransport extends TransportStream {
     const { level, message, timestamp, title, internalRequestId = null, requestId = null } = info;
 
     setImmediate(() => {
-      this.emit("logged", level);
+      this.emit('logged', level);
     });
 
     const eventType = this.validateEventLevel(level);
@@ -49,30 +49,29 @@ export class DogapiTransport extends TransportStream {
         `environment:${environment}`,
         `instance:${instance}`,
         `request-id:${requestId}`,
-        `internal-request-id:${internalRequestId}`
-      ]
+        `internal-request-id:${internalRequestId}`,
+      ],
     };
 
     // Instead of null we can put a callback for some additional action
     dogapi.event.create(title, message, properties, (err: any, res: any) => {
       if (this.loggerOptions.logDatadogEvents) {
         // tslint:disable-next-line:no-console
-        console.log("Datadog event response: ", res);
+        console.log('Datadog event response: ', res);
       }
 
       if (this.loggerOptions.logDatadogEvents && err) {
         // tslint:disable-next-line:no-console
-        console.log("Datadog event error: ", err);
+        console.log('Datadog event error: ', err);
       }
       return callback(null, true);
     });
   }
 
   private validateEventLevel(level: WinstonEvent | string): string {
-
     const eventMapping = this.loggerOptions.eventMapping as any;
 
-    const isString = (typeof level === "string");
+    const isString = typeof level === 'string';
 
     if (isString && eventMapping.hasOwnProperty(level)) {
       return eventMapping[level];

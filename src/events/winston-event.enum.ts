@@ -4,10 +4,10 @@
 // We are using this:
 // logger.log(WinstonEvent.Info, 'App is running at http://localhost..'
 export const enum WinstonEvent {
-  Error = "error",
-  Warn = "warning",
-  Info = "info",
-  Verbose = "verbose",
-  Debug = "debug",
-  Silly = "silly",
+  Error = 'error',
+  Warn = 'warning',
+  Info = 'info',
+  Verbose = 'verbose',
+  Debug = 'debug',
+  Silly = 'silly',
 }

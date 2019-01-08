@@ -1,11 +1,11 @@
 {
   "name": "winston-datadog-logger",
   "version": "1.0.0",
-  "description": "",
+  "description": "Library that makes use of Winston for logging and adding Datadog support",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --verbose --coverage",
+    "test": "jest",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
@@ -15,8 +15,23 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kioannou/winston-datadog-logger"
+  },
   "author": "Konstantinos Ioannou <konsioannou@gmail.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kioannou/winston-datadog-logger/issues"
+  },
+  "homepage": "https://github.com/kioannou/winston-datadog-logger#readme",
+  "keywords": [
+    "logger",
+    "typescript",
+    "winston",
+    "datadog",
+    "error"
+  ],
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "jest": "^23.6.0",

@@ -2,11 +2,10 @@
  The options for the Winston Console Transport.
  Official documentation: https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport
  */
-import { WinstonEvent } from "../events/winston-event.enum";
+import { WinstonEvent } from '../events/winston-event.enum';
 
 export interface IConsoleTransportOptions {
-  level?: WinstonEvent,
-  silent?: boolean,
-  handleExceptions?: boolean,
+  level?: WinstonEvent;
+  silent?: boolean;
+  handleExceptions?: boolean;
 }
-
