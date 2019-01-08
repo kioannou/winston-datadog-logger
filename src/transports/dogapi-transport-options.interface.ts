@@ -1,9 +1,9 @@
 import { TransportStreamOptions } from "winston-transport";
+import { WinstonEvent } from "../events/winston-event.enum";
 import { NullableString } from "../types/nullable-string.type";
-import { EventLevel } from "../events/event-level.enum";
 
 export interface IDogapiTransportOptions extends TransportStreamOptions {
-  level: EventLevel;
+  level: WinstonEvent;
   handleExceptions: boolean;
   apiKey: NullableString;
   appKey: NullableString;

@@ -1,14 +1,12 @@
-/**
- * The options for the Winston Console Transport.
- * Official documentation: https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport
- **/
-import { EventLevel } from "../events/event-level.enum";
+/*
+ The options for the Winston Console Transport.
+ Official documentation: https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport
+ */
+import { WinstonEvent } from "../events/winston-event.enum";
 
 export interface IConsoleTransportOptions {
-  level?: string,
+  level?: WinstonEvent,
   silent?: boolean,
-  string?: string,
-  stderrLevels?: EventLevel[],
-  consoleWarnLevels?: EventLevel[]
+  handleExceptions?: boolean,
 }
 

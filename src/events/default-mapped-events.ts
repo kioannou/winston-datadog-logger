@@ -3,11 +3,11 @@
 // it is translated to an 'info' event when it is logged with datadog
 import { DogapiEvent } from "./dogapi-event.enum";
 
-export const DEFAULT_EVENT_LEVEL_MAPPING = {
-  error: DogapiEvent.Error,
-  warn: DogapiEvent.Warning,
-  info: DogapiEvent.Info,
-  verbose: DogapiEvent.Info,
+export const DEFAULT_MAPPED_EVENTS = {
   debug: DogapiEvent.Info,
-  silly: DogapiEvent.Info
+  error: DogapiEvent.Error,
+  info: DogapiEvent.Info,
+  silly: DogapiEvent.Info,
+  verbose: DogapiEvent.Info,
+  warn: DogapiEvent.Warning,
 };
