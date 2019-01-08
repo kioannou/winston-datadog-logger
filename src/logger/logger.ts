@@ -1,5 +1,6 @@
 import * as winston from 'winston';
-import { LoggerOptions } from '../logger-options/logger-options';
+import { WinstonEvent } from '..';
+import { LoggerOptions } from '..';
 import { WinstonDatadogLoggerFactory } from './winston-datadog-logger-factory';
 
 export class Logger {
@@ -14,8 +15,8 @@ export class Logger {
     return Logger.instance;
   }
 
-  public static log(message: any) {
-    Logger.getInstance().log(message);
+  public static log(event: WinstonEvent, message: string, meta: any) {
+    Logger.getInstance().log(event, message, meta);
   }
 
   private static instance: winston.Logger;

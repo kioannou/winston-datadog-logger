@@ -1,4 +1,4 @@
-import { WinstonEvent } from '../events/winston-event.enum';
+import { WinstonEvent } from '..';
 import { IConsoleTransportOptions } from './console-transport-options.interface';
 
 export class ConsoleTransportOptions implements IConsoleTransportOptions {

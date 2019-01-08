@@ -30,6 +30,7 @@ export class LoggerOptions implements ILoggerOptions {
   public eventMapping: IMappedEvents;
   public instance: NullableString;
   public logDatadogEvents: boolean;
+
   constructor(options?: ILoggerOptions) {
     this.consoleTransportOptions = LoggerOptions.setConsoleTransportOptions(options);
     this.datadogApiKey = options && options.datadogApiKey ? options.datadogApiKey : null;

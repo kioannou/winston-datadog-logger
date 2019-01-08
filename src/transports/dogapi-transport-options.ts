@@ -1,4 +1,4 @@
-import { WinstonEvent } from '../events/winston-event.enum';
+import { WinstonEvent } from '..';
 import { NullableString } from '../types/nullable-string.type';
 import { IDogapiTransportOptions } from './dogapi-transport-options.interface';
 

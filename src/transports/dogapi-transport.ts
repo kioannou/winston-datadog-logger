@@ -1,8 +1,8 @@
 // tslint:disable-next-line
 import TransportStream from 'winston-transport';
+import { WinstonEvent } from '..';
+import { LoggerOptions } from '..';
 import { DogapiEvent } from '../events/dogapi-event.enum';
-import { WinstonEvent } from '../events/winston-event.enum';
-import { LoggerOptions } from '../logger-options/logger-options';
 
 // tslint:disable-next-line
 const dogapi = require('dogapi');
