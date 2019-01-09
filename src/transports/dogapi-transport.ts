@@ -55,12 +55,12 @@ export class DogapiTransport extends TransportStream {
 
     // Instead of null we can put a callback for some additional action
     dogapi.event.create(title, message, properties, (err: any, res: any) => {
-      if (this.loggerOptions.logDatadogEvents) {
+      if (this.loggerOptions.dogapiTransportOptions.logDatadogEvents) {
         // tslint:disable-next-line:no-console
         console.log('Datadog event response: ', res);
       }
 
-      if (this.loggerOptions.logDatadogEvents && err) {
+      if (this.loggerOptions.dogapiTransportOptions.logDatadogEvents && err) {
         // tslint:disable-next-line:no-console
         console.log('Datadog event error: ', err);
       }
