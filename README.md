@@ -30,7 +30,7 @@ import { Logger,
 // Initializing the options. 
 // If no options provided it falls back to the default ones
 const options = new LoggerOptions({
-  
+  ...
 });
 
 // Initializing the Logger using the options
