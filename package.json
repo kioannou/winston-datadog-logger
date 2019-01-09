@@ -20,7 +20,7 @@
     "url": "https://github.com/kioannou/winston-datadog-logger"
   },
   "author": "Konstantinos Ioannou <konsioannou@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kioannou/winston-datadog-logger/issues"
   },
