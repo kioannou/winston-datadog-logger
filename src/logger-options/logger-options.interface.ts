@@ -1,6 +1,6 @@
 import { IMappedEvents } from '../events/mapped-events.interface';
-import { IConsoleTransportOptions } from '../transports/console-transport-options.interface';
-import { IDogapiTransportOptions } from '../transports/dogapi-transport-options.interface';
+import { ConsoleTransportOptions } from '../transports/console-transport-options';
+import { DogapiTransportOptions } from '../transports/dogapi-transport-options';
 import { NullableString } from '../types/nullable-string.type';
 
 export interface ILoggerOptions {
@@ -12,11 +12,8 @@ export interface ILoggerOptions {
 
   // Console transport options
   logToConsole?: boolean;
-  consoleTransportOptions?: IConsoleTransportOptions;
+  consoleTransportOptions?: ConsoleTransportOptions;
 
   // Dogapi transport options
-  dogapiTransportOptions?: IDogapiTransportOptions;
-  datadogApiKey: NullableString;
-  datadogAppKey: NullableString;
-  logDatadogEvents: boolean;
+  dogapiTransportOptions?: DogapiTransportOptions;
 }
