@@ -17,7 +17,13 @@ export class Logger {
   }
 
   public static log(event: WinstonEvent, message: string, meta?: IDogapiLogMeta) {
-    Logger.getInstance().log(event, message, meta);
+    try {
+      const instance = Logger.getInstance();
+      instance.log(event, message, meta);
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.log(e);
+    }
   }
 
   private static instance: winston.Logger;
