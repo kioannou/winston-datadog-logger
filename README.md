@@ -25,12 +25,35 @@ the available event levels for your logs.
 ```typescript
 import { Logger, 
          LoggerOptions, 
-         WinstonEvent } from 'winston-datadog-logger'
+         WinstonEvent } from 'winston-datadog-logger';
 
 // Initializing the options. 
-// If no options provided it falls back to the default ones
 const options = new LoggerOptions({
-  ...
+  exitOnError: false, // boolean. It defaults to `false`
+  environment: null, // (optional) string. It defaults to `null`
+  instance: null, // (Optional) string. It defaults to `null`
+  eventMapping: { // (Optional) The mapping of Winston events to Datadog ones. Possible values: `info`, `error`, `warning`, `success`
+    debug: 'info',
+    error: 'error',
+    info: 'info',
+    silly: 'info',
+    verbose: 'info',
+    warn: 'warning',
+  },
+  logToConsole: false, // (optional) boolean. It defaults to `null`
+  consoleTransportOptions: {
+    level: 'debug', // (optional) WinstonLevel. Defaults to `debug`. Possible values `error`, `warning`, `info`, `verbose`, `debug`, `silly`
+    silent: true, // (optional) boolean. It defaults to `true`
+    handleExceptions: true // (optional) boolean. It defaults to `true`
+  },
+  dogapiTransportOptions: {
+    apiKey: null, // string. The datadog api key of your application
+    appKey: null, // string. The datadog app key of your application
+    handleExceptions: true, // boolean. It defaults to `true`
+    level: 'debug', // (optional) WinstonLevel. Defaults to `debug`. Possible values `error`, `warning`, `info`, `verbose`, `debug`, `silly`
+    logDatadogEvents: true, // boolean. It defaults to `true`
+    silent: true // boolean. It defaults to `true`
+  }
 });
 
 // Initializing the Logger using the options
@@ -42,42 +65,5 @@ Logger.initialize(options);
 
 // e.g
 Logger.log(WinstonEvent.Debug, 'example message', {'test': 'test'});
-
-```
-
-## Logger Options
-
-The available options for now are the following:
-```javascript
-
-  consoleTransportOptions: { // The Winston transport for console logging
-    level: WinstonEvent; // The enum containing the values: "error", "warning", "info", "verbose", "debug" and "silly"
-    silent: boolean;
-    handleExceptions: boolean;
-  }
-  dogapiTransportOptions: { // The Winston transport for Datadog logging
-    apiKey: string; // The Datadog API key
-    appKey: string; // The Datadog APP key
-    handleExceptions: boolean;
-    level: WinstonEvent;
-    logDatadogEvents: boolean;
-    silent: boolean;
-  }
-  exitOnError: boolean;
-  logToConsole: boolean;
-  environment: string;
-  eventMapping: IMappedEvents // The event mapping that maps the Winston events to Datadog events
-  instance: string;
-  
-  // The mapped events are e.g. 
-  // The DogapiEvent is "info", "error", "warning" or "success"
-  {
-    debug: DogapiEvent;
-    error: DogapiEvent;
-    info: DogapiEvent;
-    silly: DogapiEvent;
-    verbose: DogapiEvent;
-    warn: DogapiEvent;
-  } 
 ```
 

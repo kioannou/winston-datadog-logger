@@ -3,18 +3,11 @@ import TransportStream from 'winston-transport';
 import { WinstonEvent } from '..';
 import { LoggerOptions } from '..';
 import { DogapiEvent } from '../events/dogapi-event.enum';
+import { DogapiLogMeta } from './dogapi-log-meta';
+import { IDogapiLogMeta } from './dogapi-log-meta.interface';
 
 // tslint:disable-next-line
 const dogapi = require('dogapi');
-
-export interface IDogapiLogInfo {
-  message: string;
-  level: DogapiEvent;
-  timestamp: string;
-  title: string;
-  internalRequestId: string;
-  requestId: string;
-}
 
 export class DogapiTransport extends TransportStream {
   private readonly loggerOptions: LoggerOptions;
@@ -26,8 +19,10 @@ export class DogapiTransport extends TransportStream {
     dogapi.initialize(dogapiTransportOptions);
   }
 
-  public log(info: IDogapiLogInfo, callback: any): void {
-    const { level, message, timestamp, title, internalRequestId = null, requestId = null } = info;
+  public log(meta: IDogapiLogMeta, callback: any): void {
+    const dogapiLogMeta = new DogapiLogMeta(meta);
+
+    const { level, message, timestamp, title, internalRequestId = null, requestId = null } = dogapiLogMeta;
 
     setImmediate(() => {
       this.emit('logged', level);

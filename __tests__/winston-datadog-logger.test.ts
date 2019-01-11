@@ -8,6 +8,6 @@ describe('Winston-Datadog Logger', () => {
   });
 
   test('should log successfully', () => {
-    Logger.log(WinstonEvent.Debug, 'Test message', {'test': 'test'})
+    Logger.log(WinstonEvent.Debug, 'Test message', {'title': 'test'})
   })
 });
