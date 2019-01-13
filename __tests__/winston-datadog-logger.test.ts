@@ -3,7 +3,7 @@ import { DogapiEvent } from '../src/events/dogapi-event.enum';
 
 describe('Winston-Datadog Logger', () => {
   beforeAll(() => {
-    const options = new LoggerOptions({
+    const options = {
       consoleTransportOptions: {
         handleExceptions: true,
         level: WinstonEvent.Debug,
@@ -29,13 +29,13 @@ describe('Winston-Datadog Logger', () => {
       exitOnError: false,
       instance: 'test-instance',
       logToConsole: true,
-    });
+    };
 
     Logger.initialize(options);
 
   });
 
   test('should log successfully', () => {
-    Logger.log(WinstonEvent.Debug, 'Test message', { 'title': 'ASKRT' });
+    Logger.log(WinstonEvent.Debug, 'Test message', { 'title': 'LIBRARY' });
   });
 });

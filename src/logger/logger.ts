@@ -5,8 +5,9 @@ import { IDogapiLogMeta } from '../transports/dogapi-log-meta.interface';
 import { WinstonDatadogLoggerFactory } from './winston-datadog-logger-factory';
 
 export class Logger {
-  public static initialize(options: LoggerOptions) {
-    Logger.instance = new WinstonDatadogLoggerFactory(options).create();
+  public static initialize(options?: LoggerOptions) {
+    const loggerOptions = new LoggerOptions(options);
+    Logger.instance = new WinstonDatadogLoggerFactory(loggerOptions).create();
   }
 
   public static getInstance() {
@@ -18,8 +19,7 @@ export class Logger {
 
   public static log(event: WinstonEvent, message: string, meta?: IDogapiLogMeta) {
     try {
-      const instance = Logger.getInstance();
-      instance.log(event, message, meta);
+      Logger.getInstance().log(event, message, meta);
     } catch (e) {
       // tslint:disable-next-line:no-console
       console.log(e);
