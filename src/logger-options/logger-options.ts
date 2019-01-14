@@ -6,6 +6,7 @@ import { NullableString } from '../types/nullable-string.type';
 import { ILoggerOptions } from './logger-options.interface';
 
 export class LoggerOptions implements ILoggerOptions {
+
   private static setConsoleTransportOptions(options?: ILoggerOptions): ConsoleTransportOptions {
     if (options && options.hasOwnProperty('consoleTransportOptions')) {
       return new ConsoleTransportOptions(options.consoleTransportOptions);

@@ -1,30 +1,28 @@
 import * as winston from 'winston';
-import { WinstonEvent } from '..';
-import { LoggerOptions } from '..';
-import { IDogapiLogMeta } from '../transports/dogapi-log-meta.interface';
-import { WinstonDatadogLoggerFactory } from './winston-datadog-logger-factory';
+import { LoggerOptionsRepository } from '../logger-options/logger-options-repository';
+import { DogapiTransport } from '../transports/dogapi-transport';
 
-export class Logger {
-  public static initialize(options?: LoggerOptions) {
-    const loggerOptions = new LoggerOptions(options);
-    Logger.instance = new WinstonDatadogLoggerFactory(loggerOptions).create();
-  }
+// Configuring the format of winston
+const configuredWinstonFormat = winston.format.combine(
+  winston.format.colorize(),
+  winston.format.timestamp(),
+  winston.format.align(),
+  winston.format.printf(info =>
+    `${info.timestamp} ${info.level}: ${info.message}`));
 
-  public static getInstance() {
-    if (!Logger.instance) {
-      Logger.instance = new WinstonDatadogLoggerFactory().create();
-    }
-    return Logger.instance;
-  }
+const loggerOptions = LoggerOptionsRepository.getInstance();
 
-  public static log(event: WinstonEvent, message: string, meta?: IDogapiLogMeta) {
-    try {
-      Logger.getInstance().log(event, message, meta);
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.log(e);
-    }
-  }
+// Configuring winston logger
+const wdlogger = winston.createLogger({
+  exitOnError: false,
+  format: configuredWinstonFormat, // Uses the custom format defined above
+  transports: [
+    new winston.transports.Console({
+      handleExceptions: loggerOptions.consoleTransportOptions.handleExceptions,
+      level: loggerOptions.consoleTransportOptions.level,
+    }),
+    new DogapiTransport(loggerOptions),
+  ],
+});
 
-  private static instance: winston.Logger;
-}
+export default wdlogger

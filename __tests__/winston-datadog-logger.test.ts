@@ -1,5 +1,7 @@
-import { Logger, LoggerOptions, WinstonEvent } from '../src';
+import { WinstonEvent } from '../src';
 import { DogapiEvent } from '../src/events/dogapi-event.enum';
+import { LoggerOptionsRepository } from '../src/logger-options/logger-options-repository';
+import wdlogger from '../src/logger/logger';
 
 describe('Winston-Datadog Logger', () => {
   beforeAll(() => {
@@ -10,8 +12,8 @@ describe('Winston-Datadog Logger', () => {
         silent: false,
       },
       dogapiTransportOptions: {
-        apiKey: '',
-        appKey: '',
+        apiKey: '940d9f1c2b41d0fefc21cd928b1395dc',
+        appKey: 'a4635ec433a46b90d974f832ec9be7c7c9f8cb5b',
         handleExceptions: true,
         level: WinstonEvent.Debug,
         logDatadogEvents: true,
@@ -31,11 +33,11 @@ describe('Winston-Datadog Logger', () => {
       logToConsole: true,
     };
 
-    Logger.initialize(options);
+    LoggerOptionsRepository.initialize(options);
 
   });
 
   test('should log successfully', () => {
-    Logger.log(WinstonEvent.Debug, 'Test message', { 'title': 'LIBRARY' });
+    wdlogger.log(WinstonEvent.Error, 'Test message', { 'title': 'VICTORY' });
   });
 });
