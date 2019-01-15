@@ -1,28 +1,43 @@
 // tslint:disable-next-line
 import TransportStream from 'winston-transport';
 import { WinstonEvent } from '..';
-import { LoggerOptions } from '..';
 import { DogapiEvent } from '../events/dogapi-event.enum';
-import { DogapiLogMeta } from './dogapi-log-meta';
-import { IDogapiLogMeta } from './dogapi-log-meta.interface';
+import { LoggerOptions } from '../logger-options/logger-options';
 
 // tslint:disable-next-line
 const dogapi = require('dogapi');
 
-export class DogapiTransport extends TransportStream {
-  private readonly loggerOptions: LoggerOptions;
+export interface ILogMeta {
+  message: string;
+  level: WinstonEvent;
+  timestamp: string;
+  title: string;
+  internalRequestId: string;
+  requestId: string;
+}
 
-  constructor(loggerOptions: LoggerOptions) {
-    const dogapiTransportOptions = loggerOptions.dogapiTransportOptions;
+export class DogapiTransport extends TransportStream {
+  private readonly options: LoggerOptions;
+
+  constructor(options: any) {
+    const dogapiTransportOptions = options.dogapiTransportOptions;
     super(dogapiTransportOptions);
-    this.loggerOptions = loggerOptions;
-    dogapi.initialize(dogapiTransportOptions);
+
+    // Updating the options
+    this.options = options;
+
+    const dogapiOptions = {
+      api_key: dogapiTransportOptions.apiKey,
+      app_key: dogapiTransportOptions.appKey,
+      logDatadogEvents: dogapiTransportOptions.logDatadogEvents,
+    };
+
+    // Initializing dogapi
+    dogapi.initialize(dogapiOptions);
   }
 
-  public log(meta: IDogapiLogMeta, callback: any): void {
-    const dogapiLogMeta = new DogapiLogMeta(meta);
-
-    const { level, message, timestamp, title, internalRequestId = null, requestId = null } = dogapiLogMeta;
+  public log(meta: ILogMeta, callback: any): void {
+    const { level, message, timestamp, title, internalRequestId = null, requestId = null } = meta;
 
     setImmediate(() => {
       this.emit('logged', level);
@@ -33,8 +48,8 @@ export class DogapiTransport extends TransportStream {
     // Formatting the date in milliseconds
     const formattedDate = new Date(timestamp).valueOf() / 1000;
 
-    const environment = this.loggerOptions.environment;
-    const instance = this.loggerOptions.instance;
+    const environment = this.options.environment;
+    const instance = this.options.instance;
 
     // Creating the options
     const properties = {
@@ -50,12 +65,12 @@ export class DogapiTransport extends TransportStream {
 
     // Instead of null we can put a callback for some additional action
     dogapi.event.create(title, message, properties, (err: any, res: any) => {
-      if (this.loggerOptions.dogapiTransportOptions.logDatadogEvents) {
+      if (this.options.dogapiTransportOptions.logDatadogEvents) {
         // tslint:disable-next-line:no-console
         console.log('Datadog event response: ', res);
       }
 
-      if (this.loggerOptions.dogapiTransportOptions.logDatadogEvents && err) {
+      if (this.options.dogapiTransportOptions.logDatadogEvents && err) {
         // tslint:disable-next-line:no-console
         console.log('Datadog event error: ', err);
       }
@@ -64,7 +79,7 @@ export class DogapiTransport extends TransportStream {
   }
 
   private validateEventLevel(level: WinstonEvent | string): string {
-    const eventMapping = this.loggerOptions.eventMapping as any;
+    const eventMapping = this.options.eventMapping as any;
 
     const isString = typeof level === 'string';
 

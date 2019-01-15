@@ -1,23 +1,44 @@
 import * as winston from 'winston';
 import { WinstonEvent } from '..';
-import { LoggerOptions } from '..';
-import { IDogapiLogMeta } from '../transports/dogapi-log-meta.interface';
-import { WinstonDatadogLoggerFactory } from './winston-datadog-logger-factory';
+import { LoggerOptions } from '../logger-options/logger-options';
+import { DogapiTransport } from '../transports/dogapi-transport';
 
 export class Logger {
-  public static initialize(options: LoggerOptions) {
-    Logger.instance = new WinstonDatadogLoggerFactory(options).create();
+  public static initialize(opts?: any): void {
+    const options = new LoggerOptions(opts);
+
+    Logger.instance = winston.createLogger({
+      exitOnError: options.exitOnError,
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.align(),
+        winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
+      ), // Uses the custom format defined above
+      transports: [
+        new winston.transports.Console({
+          handleExceptions: options.consoleTransportOptions.handleExceptions,
+          level: options.consoleTransportOptions.level,
+        }),
+        new DogapiTransport(options),
+      ],
+    });
   }
 
   public static getInstance() {
     if (!Logger.instance) {
-      Logger.instance = new WinstonDatadogLoggerFactory().create();
+      Logger.initialize();
     }
     return Logger.instance;
   }
 
-  public static log(event: WinstonEvent, message: string, meta?: IDogapiLogMeta) {
-    Logger.getInstance().log(event, message, meta);
+  public static log(event: WinstonEvent, message: string, meta?: any) {
+    try {
+      Logger.getInstance().log(event, message, meta);
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.log(e);
+    }
   }
 
   private static instance: winston.Logger;
