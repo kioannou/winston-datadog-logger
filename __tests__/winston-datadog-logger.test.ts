@@ -1,10 +1,9 @@
 import { WinstonEvent } from '../src';
 import { DogapiEvent } from '../src/events/dogapi-event.enum';
-import { LoggerOptionsRepository } from '../src/logger-options/logger-options-repository';
-import wdlogger from '../src/logger/logger';
+import { Logger } from '../src/logger/logger';
 
 describe('Winston-Datadog Logger', () => {
-  beforeAll(() => {
+  test('should log successfully', () => {
     const options = {
       consoleTransportOptions: {
         handleExceptions: true,
@@ -12,14 +11,14 @@ describe('Winston-Datadog Logger', () => {
         silent: false,
       },
       dogapiTransportOptions: {
-        apiKey: '940d9f1c2b41d0fefc21cd928b1395dc',
-        appKey: 'a4635ec433a46b90d974f832ec9be7c7c9f8cb5b',
+        apiKey: '',
+        appKey: '',
         handleExceptions: true,
         level: WinstonEvent.Debug,
         logDatadogEvents: true,
         silent: false,
       },
-      environment: 'test-environment',
+      environment: 'local',
       eventMapping: {
         debug: DogapiEvent.Info,
         error: DogapiEvent.Error,
@@ -29,15 +28,13 @@ describe('Winston-Datadog Logger', () => {
         warn: DogapiEvent.Warning,
       },
       exitOnError: false,
-      instance: 'test-instance',
+      instance: 'base-gateway',
       logToConsole: true,
     };
 
-    LoggerOptionsRepository.initialize(options);
+    Logger.initialize(options);
 
-  });
-
-  test('should log successfully', () => {
-    wdlogger.log(WinstonEvent.Error, 'Test message', { 'title': 'VICTORY' });
+    // For manual test purposes
+    Logger.log(WinstonEvent.Debug, 'Test message', { 'title': 'TEST TITLE' });
   });
 });

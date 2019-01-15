@@ -1,28 +1,45 @@
 import * as winston from 'winston';
-import { LoggerOptionsRepository } from '../logger-options/logger-options-repository';
+import { WinstonEvent } from '..';
+import { LoggerOptions } from '../logger-options/logger-options';
 import { DogapiTransport } from '../transports/dogapi-transport';
 
-// Configuring the format of winston
-const configuredWinstonFormat = winston.format.combine(
-  winston.format.colorize(),
-  winston.format.timestamp(),
-  winston.format.align(),
-  winston.format.printf(info =>
-    `${info.timestamp} ${info.level}: ${info.message}`));
+export class Logger {
+  public static initialize(opts?: any): void {
+    const options = new LoggerOptions(opts);
 
-const loggerOptions = LoggerOptionsRepository.getInstance();
+    Logger.instance = winston.createLogger({
+      exitOnError: options.exitOnError,
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.align(),
+        winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
+      ), // Uses the custom format defined above
+      transports: [
+        new winston.transports.Console({
+          handleExceptions: options.consoleTransportOptions.handleExceptions,
+          level: options.consoleTransportOptions.level,
+        }),
+        new DogapiTransport(options),
+      ],
+    });
+  }
 
-// Configuring winston logger
-const wdlogger = winston.createLogger({
-  exitOnError: false,
-  format: configuredWinstonFormat, // Uses the custom format defined above
-  transports: [
-    new winston.transports.Console({
-      handleExceptions: loggerOptions.consoleTransportOptions.handleExceptions,
-      level: loggerOptions.consoleTransportOptions.level,
-    }),
-    new DogapiTransport(loggerOptions),
-  ],
-});
+  public static getInstance() {
+    if (!Logger.instance) {
+      Logger.initialize();
+    }
+    return Logger.instance;
+  }
 
-export default wdlogger
+  public static log(event: WinstonEvent, message: string, meta?: any) {
+    try {
+      Logger.getInstance().log(event, message, meta);
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.log(e);
+    }
+  }
+
+  private static instance: winston.Logger;
+}

@@ -6,7 +6,6 @@ import { NullableString } from '../types/nullable-string.type';
 import { ILoggerOptions } from './logger-options.interface';
 
 export class LoggerOptions implements ILoggerOptions {
-
   private static setConsoleTransportOptions(options?: ILoggerOptions): ConsoleTransportOptions {
     if (options && options.hasOwnProperty('consoleTransportOptions')) {
       return new ConsoleTransportOptions(options.consoleTransportOptions);
@@ -21,6 +20,26 @@ export class LoggerOptions implements ILoggerOptions {
     return new DogapiTransportOptions();
   }
 
+  private static getInstance(options?: ILoggerOptions) {
+    return options && options.instance ? options.instance : null;
+  }
+
+  private static getEventMapping(options?: ILoggerOptions) {
+    return options && options.eventMapping ? options.eventMapping : DEFAULT_MAPPED_EVENTS;
+  }
+
+  private static getEnvironment(options?: ILoggerOptions) {
+    return options && options.environment ? options.environment : null;
+  }
+
+  private static getLogToConsole(options?: ILoggerOptions) {
+    return options && options.hasOwnProperty('logToConsole') ? !!options.logToConsole : false;
+  }
+
+  private static getExitOnError(options?: ILoggerOptions) {
+    return options && options.hasOwnProperty('exitOnError') ? options.exitOnError : false;
+  }
+
   public consoleTransportOptions: ConsoleTransportOptions;
   public dogapiTransportOptions: DogapiTransportOptions;
   public exitOnError: boolean;
@@ -32,10 +51,10 @@ export class LoggerOptions implements ILoggerOptions {
   constructor(options?: ILoggerOptions) {
     this.consoleTransportOptions = LoggerOptions.setConsoleTransportOptions(options);
     this.dogapiTransportOptions = LoggerOptions.setDogapiTransportOptions(options);
-    this.exitOnError = options && options.exitOnError ? options.exitOnError : false;
-    this.logToConsole = options && options.logToConsole ? options.logToConsole : false;
-    this.environment = options && options.environment ? options.environment : null;
-    this.eventMapping = options && options.eventMapping ? options.eventMapping : DEFAULT_MAPPED_EVENTS;
-    this.instance = options && options.instance ? options.instance : null;
+    this.exitOnError = LoggerOptions.getExitOnError(options);
+    this.logToConsole = LoggerOptions.getLogToConsole(options);
+    this.environment = LoggerOptions.getEnvironment(options);
+    this.eventMapping = LoggerOptions.getEventMapping(options);
+    this.instance = LoggerOptions.getInstance(options);
   }
 }

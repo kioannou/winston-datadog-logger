@@ -28,7 +28,7 @@ import { Logger,
          WinstonEvent } from 'winston-datadog-logger';
 
 // Initializing the options. 
-const options = new LoggerOptions({
+const options = {
   exitOnError: false, // boolean. It defaults to `false`
   environment: null, // (optional) string. It defaults to `null`
   instance: null, // (Optional) string. It defaults to `null`
@@ -54,7 +54,7 @@ const options = new LoggerOptions({
     logDatadogEvents: true, // boolean. It defaults to `true`
     silent: true // boolean. It defaults to `true`
   }
-});
+};
 
 // Initializing the Logger using the options
 Logger.initialize(options);
@@ -64,6 +64,6 @@ Logger.initialize(options);
 // Logger.log({ level }, { message }, { meta });
 
 // e.g
-Logger.log(WinstonEvent.Debug, 'example message', {'test': 'test'});
+Logger.log(WinstonEvent.Debug, 'example message', {'title': 'your-title'});
 ```
 

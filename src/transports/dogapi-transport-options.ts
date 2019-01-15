@@ -3,19 +3,36 @@ import { NullableString } from '../types/nullable-string.type';
 import { IDogapiTransportOptions } from './dogapi-transport-options.interface';
 
 export class DogapiTransportOptions implements IDogapiTransportOptions {
+  private static getLogDatadogEvents(options?: IDogapiTransportOptions) {
+    return options && options.hasOwnProperty('logDatadogEvents') ? options.logDatadogEvents : true;
+  }
+
+  private static getLevel(options?: IDogapiTransportOptions) {
+    return options && options.hasOwnProperty('level') ? options.level : WinstonEvent.Debug;
+  }
+
+  private static getHandleExceptions(options?: IDogapiTransportOptions) {
+    return options && options.hasOwnProperty('handleExceptions') ? options.handleExceptions : true;
+  }
+
+  private static getAppKey(options?: IDogapiTransportOptions) {
+    return options && options.hasOwnProperty('appKey') ? options.appKey : null;
+  }
+
+  private static getApiKey(options?: IDogapiTransportOptions) {
+    return options && options.hasOwnProperty('apiKey') ? options.apiKey : null;
+  }
   public apiKey: NullableString;
   public appKey: NullableString;
   public handleExceptions: boolean;
   public level: WinstonEvent;
   public logDatadogEvents: boolean;
-  public silent: boolean;
 
   constructor(options?: IDogapiTransportOptions) {
-    this.apiKey = options && options.apiKey ? options.apiKey : null;
-    this.appKey = options && options.appKey ? options.appKey : null;
-    this.handleExceptions = options && options.handleExceptions ? options.handleExceptions : true;
-    this.level = options && options.level ? options.level : WinstonEvent.Debug;
-    this.logDatadogEvents = options && options.logDatadogEvents ? options.logDatadogEvents : true;
-    this.silent = options && options.silent ? options.silent : true;
+    this.apiKey = DogapiTransportOptions.getApiKey(options);
+    this.appKey = DogapiTransportOptions.getAppKey(options);
+    this.handleExceptions = DogapiTransportOptions.getHandleExceptions(options);
+    this.level = DogapiTransportOptions.getLevel(options);
+    this.logDatadogEvents = DogapiTransportOptions.getLogDatadogEvents(options);
   }
 }
