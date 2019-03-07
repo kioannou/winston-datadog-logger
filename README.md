@@ -46,6 +46,7 @@ const options = {
     silent: true, // (optional) boolean. It defaults to `true`
     handleExceptions: true // (optional) boolean. It defaults to `true`
   },
+  datadogLoggerEnabled: true, // (optional) boolean. It defaults to `true`
   dogapiTransportOptions: {
     apiKey: null, // string. The datadog api key of your application
     appKey: null, // string. The datadog app key of your application

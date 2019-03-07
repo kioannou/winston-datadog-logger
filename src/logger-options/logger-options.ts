@@ -40,6 +40,10 @@ export class LoggerOptions implements ILoggerOptions {
     return options && options.hasOwnProperty('exitOnError') ? options.exitOnError : false;
   }
 
+  private static getDatadogLoggerEnabled(options?: ILoggerOptions) {
+    return options && options.hasOwnProperty('datadogLoggerEnabled') ? options.datadogLoggerEnabled : true;
+  }
+
   public consoleTransportOptions: ConsoleTransportOptions;
   public dogapiTransportOptions: DogapiTransportOptions;
   public exitOnError: boolean;
@@ -47,6 +51,7 @@ export class LoggerOptions implements ILoggerOptions {
   public environment: NullableString;
   public eventMapping: IMappedEvents;
   public instance: NullableString;
+  public datadogLoggerEnabled: boolean;
 
   constructor(options?: ILoggerOptions) {
     this.consoleTransportOptions = LoggerOptions.setConsoleTransportOptions(options);
@@ -56,5 +61,6 @@ export class LoggerOptions implements ILoggerOptions {
     this.environment = LoggerOptions.getEnvironment(options);
     this.eventMapping = LoggerOptions.getEventMapping(options);
     this.instance = LoggerOptions.getInstance(options);
+    this.datadogLoggerEnabled = LoggerOptions.getDatadogLoggerEnabled(options);
   }
 }

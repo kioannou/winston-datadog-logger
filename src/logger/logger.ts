@@ -7,6 +7,21 @@ export class Logger {
   public static initialize(opts?: any): void {
     const options = new LoggerOptions(opts);
 
+    const transports = [];
+
+    transports.push(
+      new winston.transports.Console({
+        handleExceptions: options.consoleTransportOptions.handleExceptions,
+        level: options.consoleTransportOptions.level,
+      })
+    );
+
+    if (options.datadogLoggerEnabled) {
+      transports.push(
+        new DogapiTransport(options)
+      );
+    }
+
     Logger.instance = winston.createLogger({
       exitOnError: options.exitOnError,
       format: winston.format.combine(
@@ -15,13 +30,7 @@ export class Logger {
         winston.format.align(),
         winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
       ), // Uses the custom format defined above
-      transports: [
-        new winston.transports.Console({
-          handleExceptions: options.consoleTransportOptions.handleExceptions,
-          level: options.consoleTransportOptions.level,
-        }),
-        new DogapiTransport(options),
-      ],
+      transports,
     });
   }
 
