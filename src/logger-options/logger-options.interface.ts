@@ -11,4 +11,5 @@ export interface ILoggerOptions {
   logToConsole?: boolean;
   consoleTransportOptions?: ConsoleTransportOptions;
   dogapiTransportOptions?: DogapiTransportOptions;
+  datadogLoggerEnabled: boolean;
 }
