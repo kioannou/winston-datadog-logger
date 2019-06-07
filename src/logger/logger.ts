@@ -13,13 +13,11 @@ export class Logger {
       new winston.transports.Console({
         handleExceptions: options.consoleTransportOptions.handleExceptions,
         level: options.consoleTransportOptions.level,
-      })
+      }),
     );
 
     if (options.datadogLoggerEnabled) {
-      transports.push(
-        new DogapiTransport(options)
-      );
+      transports.push(new DogapiTransport(options));
     }
 
     Logger.instance = winston.createLogger({
