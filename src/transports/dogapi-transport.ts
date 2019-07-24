@@ -48,23 +48,22 @@ export class DogapiTransport extends TransportStream {
     // Formatting the date in milliseconds
     const formattedDate = new Date(timestamp).valueOf() / 1000;
 
-    const environment = this.options.environment;
-    const instance = this.options.instance;
-
     // Creating the options
     const properties = {
       alert_type: eventType,
       date_happened: formattedDate,
       tags: [
-        `environment:${environment}`,
-        `instance:${instance}`,
+        ...(this.options.dogapiTransportOptions.tags || [
+          `environment:${this.options.environment}`,
+          `instance:${this.options.instance}`,
+        ]),
         `request-id:${requestId}`,
         `internal-request-id:${internalRequestId}`,
       ],
     };
 
     // Instead of null we can put a callback for some additional action
-    dogapi.event.create(title, message, properties, (err: any, res: any) => {
+    dogapi.event.create(title || this.options.dogapiTransportOptions.title, message, properties, (err: any, res: any) => {
       if (this.options.dogapiTransportOptions.logDatadogEvents) {
         // tslint:disable-next-line:no-console
         console.log('Datadog event response: ', res);
