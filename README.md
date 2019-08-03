@@ -5,16 +5,29 @@
 
 A [winston](https://www.npmjs.com/package/express-winston) logger with [datadog](https://www.datadoghq.com/) support.
 
-## Install
-[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
-
+### How to install
 ```bash
 $ npm i winston-datadog-logger
 ```
 
+### Transport
+The library exposes the transport itself.  
+You can initialize a transport with the following options:  
+```typescript
+const options: IDogapiTransportOptions = {
+                    apiKey: null, // string. The datadog api key of your application
+                    appKey: null, // string. The datadog app key of your application
+                    handleExceptions: true, // boolean. It defaults to `true`
+                    level: 'debug', // (optional) WinstonLevel. Defaults to `debug`. Possible values `error`, `warning`, `info`, `verbose`, `debug`, `silly`
+                    logDatadogEvents: true, // boolean. It defaults to `true`
+                    silent: true, // boolean. It defaults to `true`
+                    tags: ['environment:production', 'version:1.2.3'], // allows transport level tagging in datadog
+                    title: 'test-title' // string. It defaults to empty and can be overridden in the log messages
+}
+```
 
-## How to use
 
+### Logger
 The library provides a `Logger` instance. 
 
 The `LoggerOptions` (The options for initializing the logger)
