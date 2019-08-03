@@ -63,18 +63,23 @@ export class DogapiTransport extends TransportStream {
     };
 
     // Instead of null we can put a callback for some additional action
-    dogapi.event.create(title || this.options.dogapiTransportOptions.title, message, properties, (err: any, res: any) => {
-      if (this.options.dogapiTransportOptions.logDatadogEvents) {
-        // tslint:disable-next-line:no-console
-        console.log('Datadog event response: ', res);
-      }
+    dogapi.event.create(
+      title || this.options.dogapiTransportOptions.title,
+      message,
+      properties,
+      (err: any, res: any) => {
+        if (this.options.dogapiTransportOptions.logDatadogEvents) {
+          // tslint:disable-next-line:no-console
+          console.log('Datadog event response: ', res);
+        }
 
-      if (this.options.dogapiTransportOptions.logDatadogEvents && err) {
-        // tslint:disable-next-line:no-console
-        console.log('Datadog event error: ', err);
-      }
-      return callback(null, true);
-    });
+        if (this.options.dogapiTransportOptions.logDatadogEvents && err) {
+          // tslint:disable-next-line:no-console
+          console.log('Datadog event error: ', err);
+        }
+        return callback(null, true);
+      },
+    );
   }
 
   private validateEventLevel(level: WinstonEvent | string): string {
