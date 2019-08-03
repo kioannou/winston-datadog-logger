@@ -1,6 +1,6 @@
 import { WinstonEvent } from '..';
-import { NullableString } from '../types/nullable-string.type';
 import { NullableStringArray } from '../types/nullable-string-array.type';
+import { NullableString } from '../types/nullable-string.type';
 import { IDogapiTransportOptions } from './dogapi-transport-options.interface';
 
 export class DogapiTransportOptions implements IDogapiTransportOptions {
