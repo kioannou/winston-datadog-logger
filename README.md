@@ -89,4 +89,4 @@ const logger = winston.createLogger({
 logger.log('debug', 'example message', { 'title': 'your-title' });
 ```
 
-The second argument is optional, merely an escape hatch for any overrides from the larger logger options above. The only 
+The second argument is optional, merely an escape hatch for any overrides from the larger logger options above.
