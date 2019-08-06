@@ -83,3 +83,23 @@ Logger.initialize(options);
 Logger.log(WinstonEvent.Debug, 'example message', {'title': 'your-title'});
 ```
 
+Additionally, the library provides a `Transport` instance if composing your own logger.
+This is consumed similarly to the logger, albeit with fewer options 
+
+```typescript
+import * as winston from 'winston';
+import { Transport as DatadogTransport } from 'winston-datadog-logger';
+
+const options = { /* same as above */ };
+
+const logger = winston.createLogger({
+  transports: [DatadogTransport(
+    options.dogapiTransportOptions,
+    options,
+  )],
+});
+
+logger.log('debug', 'example message', { 'title': 'your-title' });
+```
+
+The second argument is optional, merely an escape hatch for any overrides from the larger logger options above.
