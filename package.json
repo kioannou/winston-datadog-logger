@@ -1,6 +1,6 @@
 {
   "name": "winston-datadog-logger",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Library that makes use of Winston for logging and adding Datadog support",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
