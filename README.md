@@ -66,7 +66,6 @@ const options = {
     handleExceptions: true, // boolean. It defaults to `true`
     level: 'debug', // (optional) WinstonLevel. Defaults to `debug`. Possible values `error`, `warning`, `info`, `verbose`, `debug`, `silly`
     logDatadogEvents: true, // boolean. It defaults to `true`
-    silent: true, // boolean. It defaults to `true`
     tags: ['environment:production', 'version:1.2.3'], // allows transport level tagging in datadog
     title: 'test-title' // string. It defaults to empty and can be overridden in the log messages
   }
